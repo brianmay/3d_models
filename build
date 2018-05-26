@@ -1,0 +1,50 @@
+#!/bin/sh
+set -ex
+
+OPENSCAD="openscad-nightly"
+OUTPUT_DIR="./"
+
+do_level() {
+    local NAME="$1"
+    shift
+    local ARGS="$*"
+
+    $OPENSCAD -o "$OUTPUT_DIR/$NAME-middle.stl" $ARGS cd_dvd.scad
+
+    ARGS="$* -D l_do=false"
+    $OPENSCAD -o "$OUTPUT_DIR/$NAME-left.stl" $ARGS cd_dvd.scad
+
+    ARGS="$* -D r_do=false"
+    $OPENSCAD -o "$OUTPUT_DIR/$NAME-right.stl" $ARGS cd_dvd.scad
+}
+
+# BOTTOM --------------------------------------------------
+
+BOTTOM_ARGS=$(cat <<EOF
+-D b_do=false
+EOF
+)
+
+do_level "bottom" $BOTTOM_ARGS
+
+# CENTRE --------------------------------------------------
+CENTRE_ARGS=$(cat <<EOF
+-D m_padding=6
+-D t_width=11
+-D t_padding=6
+EOF
+)
+
+do_level "centre" $CENTRE_ARGS
+
+# TOP --------------------------------------------------
+TOP_ARGS=$(cat <<EOF
+-D m_padding=6
+-D t_do=false
+-D b_width=11
+-D b_padding=6
+-D gap=0
+EOF
+)
+
+do_level "top" $TOP_ARGS
