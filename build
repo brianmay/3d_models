@@ -29,8 +29,8 @@ do_level "bottom" $BOTTOM_ARGS
 
 # CENTRE --------------------------------------------------
 CENTRE_ARGS=$(cat <<EOF
--D m_padding=6
--D t_width=11
+-D m_padding=5.5
+-D t_width=10.5
 -D t_padding=6
 EOF
 )
@@ -39,7 +39,7 @@ do_level "centre" $CENTRE_ARGS
 
 # TOP --------------------------------------------------
 TOP_ARGS=$(cat <<EOF
--D m_padding=6
+-D m_padding=5.5
 -D t_do=false
 -D b_width=11
 -D b_padding=6
