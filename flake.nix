@@ -16,7 +16,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
         stl_files = pkgs.stdenv.mkDerivation {
-          name = "cd_dvd";
+          name = "3d_models_stl";
           src = ./.;
           buildPhase = ''
             mkdir $out
