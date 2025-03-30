@@ -15,10 +15,17 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
+        nutsnbolts = pkgs.fetchFromGitHub {
+          owner = "JohK";
+          repo = "nutsnbolts";
+          rev = "c16d745606ff3d069021809289137d77e19281d8";
+          hash = "sha256-n/O0bTiUyWqHQFkK2QgsKXAdL6ibGrWZEZNf5xymPtc=";
+        };
         stl_files = pkgs.stdenv.mkDerivation {
           name = "3d_models_stl";
           src = ./.;
           buildPhase = ''
+            export OPENSCADPATH="${lib.strings.makeSearchPathOutput "out" "" [ nutsnbolts ]}"
             mkdir $out
             for in_file in *.scad; do
               out_file="$out/''${in_file%.*}.stl"
@@ -32,6 +39,9 @@
           default = stl_files;
         };
         devShells.default = pkgs.mkShell {
+          shellHook = ''
+            export OPENSCADPATH="${lib.strings.makeSearchPathOutput "out" "" [ nutsnbolts ]}"
+          '';
           packages = [
             pkgs.openscad
             pkgs.openscad-lsp
