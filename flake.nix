@@ -21,11 +21,22 @@
           rev = "c16d745606ff3d069021809289137d77e19281d8";
           hash = "sha256-n/O0bTiUyWqHQFkK2QgsKXAdL6ibGrWZEZNf5xymPtc=";
         };
+        bosl2 = pkgs.fetchFromGitHub {
+          owner = "BelfrySCAD";
+          repo = "BOSL2";
+          rev = "ceddb1d188e0425aeb172addf0a138a3e86d0e12";
+          hash = "sha256-7W8PDWOakEw3fZ11N6za3tVcN9swfQZqZM0j2LXQk+o=";
+        };
+        bosl2_wrapper = pkgs.runCommand "BOSL2" { } ''
+          mkdir "$out"
+          ln -s "${bosl2}" "$out/BOSL2"
+        '';
+        includes = [ bosl2_wrapper ];
         stl_files = pkgs.stdenv.mkDerivation {
           name = "3d_models_stl";
           src = ./.;
           buildPhase = ''
-            export OPENSCADPATH="${lib.strings.makeSearchPathOutput "out" "" [ nutsnbolts ]}"
+            export OPENSCADPATH="${lib.strings.makeSearchPathOutput "out" "" includes}"
             mkdir $out
             for in_file in *.scad; do
               out_file="$out/''${in_file%.*}.stl"
@@ -40,7 +51,7 @@
         };
         devShells.default = pkgs.mkShell {
           shellHook = ''
-            export OPENSCADPATH="${lib.strings.makeSearchPathOutput "out" "" [ nutsnbolts ]}"
+            export OPENSCADPATH="${lib.strings.makeSearchPathOutput "out" "" includes}"
           '';
           packages = [
             pkgs.openscad
