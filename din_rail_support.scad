@@ -22,12 +22,12 @@ diff() {
 			fwd(5)
 		  rotate([0,270,0])
 			screw_hole("M4,8.01",counterbore=false, $fn=32, anchor=BOTTOM)
-		  position(BOT) nut_trap_inline(3, "M4");
+		  position(BOT) nut_trap_inline(4, "M4");
 
 			back(5)
 		  rotate([0,270,0])
 			screw_hole("M4,8.01",counterbore=false, $fn=32, anchor=BOTTOM)
-		  position(BOT) nut_trap_inline(3, "M4");
+		  position(BOT) nut_trap_inline(4, "M4");
 		}
 
 }
